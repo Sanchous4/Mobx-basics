@@ -48,14 +48,19 @@ class AsyncWorker {
         this.number = getRandomNumber();
     }
 
-    generateNumberByManualFlow = flow(function* (this: AsyncWorker) {
-        this.loader = 0;
-        while (this.loader < 100) {
-            yield sleep(10);
-            this.loader += 1;
+    generateNumberByManualFlow = flow(
+        /**
+         * @param {AsyncWorker} self
+         */
+        function* (self) {
+            self.loader = 0;
+            while (self.loader < 100) {
+                yield sleep(10);
+                self.loader += 1;
+            }
+            self.number = getRandomNumber();
         }
-        this.number = getRandomNumber();
-    });
+    );
 }
 
 export const AsyncWorkerInstance = new AsyncWorker();
